@@ -4,6 +4,13 @@ The Movie Catalog Service is a Spring Boot-based microservices application that 
 
 The system is built using Spring Cloud Netflix Eureka for service discovery and implements a microservices architecture with three core services: movie-catalog-service, movie-info-service, and ratings-data-service. Each service is independently deployable and communicates via REST APIs, making the system highly scalable and maintainable.
 
+## Features
+
+- **Service Discovery**: Centralized Eureka server for automatic service registration and discovery
+- **Load Balancing**: Client-side load balancing with Spring Cloud LoadBalancer
+- **Resilient Communication**: Services communicate via REST with fallback capabilities
+- **Independent Deployment**: Each microservice can be deployed and scaled independently
+
 ## Repository Structure
 ```
 .
@@ -33,7 +40,7 @@ The system is built using Spring Cloud Netflix Eureka for service discovery and 
 
 ## Usage Instructions
 ### Prerequisites
-- Java Development Kit (JDK) 17 or later
+- Java Development Kit (JDK) 21
 - Maven 3.6.3 or later
 - Spring Boot 3.1.1
 - Spring Cloud 2022.0.3
@@ -46,11 +53,16 @@ git clone <repository-url>
 cd movie-catalog-service
 ```
 
-2. Start the Discovery Server:
+2. Start the Discovery Server (MUST be started first):
 ```bash
 cd discovery-server
 ./mvnw spring-boot:run
 ```
+
+   You can also run it from IntelliJ:
+   - Open the project in IntelliJ IDEA
+   - Navigate to `discovery-server/src/main/java/com/nova/discovery_server/DiscoveryServerApplication.java`
+   - Right-click and select "Run DiscoveryServerApplication"
 
 3. Start the Movie Info Service:
 ```bash
@@ -75,21 +87,22 @@ cd ../movie-catalog-service
 ```
 http://localhost:8761
 ```
+   You should see the Eureka dashboard with all registered services.
 
 2. Access the movie catalog for a user:
 ```
-GET http://localhost:8081/catalog/{userId}
+GET http://localhost:8091/catalog/{userId}
 ```
 
 ### More Detailed Examples
 1. Get movie information:
 ```
-GET http://localhost:8082/movies/{movieId}
+GET http://localhost:8092/movies/{movieId}
 ```
 
 2. Get user ratings:
 ```
-GET http://localhost:8083/ratingsdata/user/{userId}
+GET http://localhost:8093/ratingsdata/user/{userId}
 ```
 
 ### Troubleshooting
@@ -108,9 +121,9 @@ eureka.client.serviceUrl.defaultZone=http://localhost:8761/eureka/
 - Solution: Ensure all services are running and ports are correctly configured
 - Check ports in application.properties:
   - Discovery Server: 8761
-  - Movie Catalog Service: 8081
-  - Movie Info Service: 8082
-  - Ratings Data Service: 8083
+  - Movie Catalog Service: 8091
+  - Movie Info Service: 8092
+  - Ratings Data Service: 8093
 
 ## Data Flow
 The system implements a microservices architecture where the movie-catalog-service orchestrates data from movie-info-service and ratings-data-service.
@@ -125,14 +138,14 @@ The system implements a microservices architecture where the movie-catalog-servi
                     │                                        │
             ┌───────┴──────────┐                    ┌───────┴──────────┐
             │  Movie Info      │                    │   Ratings Data   │
-            │  Service (8082)  │                    │  Service (8083)  │
+            │  Service (8092)  │                    │  Service (8093)  │
             └───────┬──────────┘                    └───────┬──────────┘
                     │                                       │
                     └───────────────┐           ┌──────────┘
                                    │           │
                             ┌──────┴───────────┴───────┐
                             │   Movie Catalog Service   │
-                            │        (Port 8081)        │
+                            │        (Port 8091)        │
                             └──────────────────────────┘
 ```
 
