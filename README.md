@@ -91,18 +91,18 @@ http://localhost:8761
 
 2. Access the movie catalog for a user:
 ```
-GET http://localhost:8091/catalog/{userId}
+GET http://localhost:8094/catalog/{userId}
 ```
 
 ### More Detailed Examples
 1. Get movie information:
 ```
-GET http://localhost:8092/movies/{movieId}
+GET http://localhost:8095/movies/{movieId}
 ```
 
 2. Get user ratings:
 ```
-GET http://localhost:8093/ratingsdata/user/{userId}
+GET http://localhost:8096/ratingsdata/user/{userId}
 ```
 
 ### Troubleshooting
@@ -121,9 +121,9 @@ eureka.client.serviceUrl.defaultZone=http://localhost:8761/eureka/
 - Solution: Ensure all services are running and ports are correctly configured
 - Check ports in application.properties:
   - Discovery Server: 8761
-  - Movie Catalog Service: 8091
-  - Movie Info Service: 8092
-  - Ratings Data Service: 8093
+  - Movie Catalog Service: 8094
+  - Movie Info Service: 8095
+  - Ratings Data Service: 8096
 
 ## Data Flow
 The system implements a microservices architecture where the movie-catalog-service orchestrates data from movie-info-service and ratings-data-service.
@@ -138,14 +138,14 @@ The system implements a microservices architecture where the movie-catalog-servi
                     │                                        │
             ┌───────┴──────────┐                    ┌───────┴──────────┐
             │  Movie Info      │                    │   Ratings Data   │
-            │  Service (8092)  │                    │  Service (8093)  │
+            │  Service (8095)  │                    │  Service (8096)  │
             └───────┬──────────┘                    └───────┬──────────┘
                     │                                       │
                     └───────────────┐           ┌──────────┘
                                    │           │
                             ┌──────┴───────────┴───────┐
                             │   Movie Catalog Service   │
-                            │        (Port 8091)        │
+                            │        (Port 8094)        │
                             └──────────────────────────┘
 ```
 
