@@ -1,8 +1,8 @@
-# Movie Catalog Service: A Microservices-based Movie Information System
+# GoodMovies: A Microservices-based Movie Information System
 
-The Movie Catalog Service is a Spring Boot-based microservices application that provides a centralized movie catalog system with service discovery capabilities. It aggregates movie information and user ratings from multiple microservices to deliver personalized movie recommendations and ratings.
+GoodMovies is a Spring Boot-based microservices application that provides a centralized movie catalog system with service discovery capabilities. It aggregates movie information and user ratings from multiple microservices to deliver personalized movie recommendations and ratings.
 
-The system is built using Spring Cloud Netflix Eureka for service discovery and implements a microservices architecture with three core services: movie-catalog-service, movie-info-service, and ratings-data-service. Each service is independently deployable and communicates via REST APIs, making the system highly scalable and maintainable.
+The system is built using Spring Cloud Netflix Eureka for service discovery and implements a microservices architecture with three core services: good-movies-catalog-service, good-movies-info-service, and good-movies-ratings-service. Each service is independently deployable and communicates via REST APIs, making the system highly scalable and maintainable.
 
 ## Features
 
@@ -17,20 +17,20 @@ The system is built using Spring Cloud Netflix Eureka for service discovery and 
 ├── discovery-server/               # Eureka Server for service discovery
 │   ├── src/                       # Source files for discovery server
 │   └── pom.xml                    # Maven configuration for discovery server
-├── movie-catalog-service/         # Main service for aggregating movie data
+├── goodmovies-catalog-service/    # Main service for aggregating movie data
 │   ├── src/
 │   │   └── main/
 │   │       └── java/
 │   │           └── resource/      # REST controllers and business logic
 │   │           └── model/         # Data models for movie catalog
 │   └── pom.xml                    # Maven configuration for catalog service
-├── movie-info-service/           # Service for movie information
+├── goodmovies-info-service/      # Service for movie information
 │   ├── src/
 │   │   └── main/
 │   │       └── java/
 │   │           └── resource/     # Movie information REST endpoints
 │   └── pom.xml                   # Maven configuration for movie info service
-└── ratings-data-service/         # Service for user ratings
+└── goodmovies-ratings-service/   # Service for user ratings
     ├── src/
     │   └── main/
     │       └── java/
@@ -50,7 +50,7 @@ The system is built using Spring Cloud Netflix Eureka for service discovery and 
 1. Clone the repository:
 ```bash
 git clone <repository-url>
-cd movie-catalog-service
+cd GoodMovies
 ```
 
 2. Start the Discovery Server (MUST be started first):
@@ -66,19 +66,19 @@ cd discovery-server
 
 3. Start the Movie Info Service:
 ```bash
-cd ../movie-info-service
+cd ../goodmovies-info-service
 ./mvnw spring-boot:run
 ```
 
 4. Start the Ratings Data Service:
 ```bash
-cd ../ratings-data-service
+cd ../goodmovies-ratings-service
 ./mvnw spring-boot:run
 ```
 
 5. Start the Movie Catalog Service:
 ```bash
-cd ../movie-catalog-service
+cd ../goodmovies-catalog-service
 ./mvnw spring-boot:run
 ```
 
@@ -121,12 +121,12 @@ eureka.client.serviceUrl.defaultZone=http://localhost:8761/eureka/
 - Solution: Ensure all services are running and ports are correctly configured
 - Check ports in application.properties:
   - Discovery Server: 8761
-  - Movie Catalog Service: 8094
-  - Movie Info Service: 8095
-  - Ratings Data Service: 8096
+  - GoodMovies Catalog Service: 8094
+  - GoodMovies Info Service: 8095
+  - GoodMovies Ratings Service: 8096
 
 ## Data Flow
-The system implements a microservices architecture where the movie-catalog-service orchestrates data from movie-info-service and ratings-data-service.
+The system implements a microservices architecture where the goodmovies-catalog-service orchestrates data from goodmovies-info-service and goodmovies-ratings-service.
 
 ```ascii
                                     ┌──────────────────┐
@@ -137,22 +137,22 @@ The system implements a microservices architecture where the movie-catalog-servi
                     ┌────────────────────────────────────────┐
                     │                                        │
             ┌───────┴──────────┐                    ┌───────┴──────────┐
-            │  Movie Info      │                    │   Ratings Data   │
+            │  GoodMovies Info │                    │ GoodMovies Ratings│
             │  Service (8095)  │                    │  Service (8096)  │
             └───────┬──────────┘                    └───────┬──────────┘
                     │                                       │
                     └───────────────┐           ┌──────────┘
                                    │           │
                             ┌──────┴───────────┴───────┐
-                            │   Movie Catalog Service   │
+                            │ GoodMovies Catalog Service│
                             │        (Port 8094)        │
                             └──────────────────────────┘
 ```
 
 Component interactions:
-1. Movie Catalog Service receives user request for movie recommendations
-2. Retrieves user ratings from Ratings Data Service
-3. For each rated movie, fetches movie details from Movie Info Service
+1. GoodMovies Catalog Service receives user request for movie recommendations
+2. Retrieves user ratings from GoodMovies Ratings Service
+3. For each rated movie, fetches movie details from GoodMovies Info Service
 4. Aggregates the data and returns a complete catalog response
 5. All services register with Eureka Server for service discovery
 6. Load balanced requests using Spring Cloud LoadBalancer
